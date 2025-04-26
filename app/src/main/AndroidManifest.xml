@@ -12,15 +12,43 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StudentAttendanceManagementApp"
         tools:targetApi="31">
+
+        <!-- Sign Up Activity -->
+        <activity android:name=".SignUpActivity" android:exported="true" />
+
+        <!-- Login Activity -->
+        <activity android:name=".LoginActivity" android:exported="true" />
+
+        <!-- Home Page Activity -->
+        <activity android:name=".HomePage" android:exported="true" />
+
+        <!-- Attendance Activity -->
+        <activity android:name=".AttendanceActivity" android:exported="true" />
+
+        <!-- Students Activity -->
+        <activity android:name=".StudentsActivity" android:exported="true" />
+
+        <!-- Join Class Activity -->
+        <activity android:name=".JoinClassActivity" android:exported="true" />
+
+        <!-- Profile Activity -->
+        <activity android:name=".ProfileActivity" android:exported="true" />
+
+        <activity android:name=".EditProfileActivity" android:exported="true"/>
+
+        <activity
+            android:name=".AddClassActivity" android:exported="true" android:theme="@style/PopupTheme" />
+
+        <!-- Main Activity (Launcher Activity) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
