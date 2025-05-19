@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
-import Model.ClassModel;
+import Model.ClassModel; // Correct import for the ClassModel
 import com.example.studentattendancemanagementapp.R;
 import java.util.List;
 

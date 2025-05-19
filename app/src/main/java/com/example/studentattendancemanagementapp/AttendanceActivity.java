@@ -90,7 +90,6 @@ public class AttendanceActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(classRecyclerView);
 
 
-        // ✅ Keep this part exactly as you asked
         plusButton.setOnClickListener(v -> {
             Intent intent = new Intent(AttendanceActivity.this, AddClassActivity.class);
             startActivity(intent);
