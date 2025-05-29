@@ -54,8 +54,15 @@ public class LoginActivity extends AppCompatActivity {
                             docRef.get().addOnCompleteListener(docTask -> {
                                 if (docTask.isSuccessful()) {
                                     // Get the user data (name and role)
-                                    String name = docTask.getResult().getString("name");
+                                    String name = docTask.getResult().getString("fullName"); // Use "fullName" if that’s your Firestore field
                                     String role = docTask.getResult().getString("role");
+
+                                    // Save to SharedPreferences
+                                    getSharedPreferences("UserPrefs", MODE_PRIVATE)
+                                            .edit()
+                                            .putString("name", name)
+                                            .putString("role", role)
+                                            .apply();
 
                                     // Pass the name and role to the HomePage activity
                                     Intent intent = new Intent(LoginActivity.this, HomePage.class);
@@ -73,4 +80,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }
+

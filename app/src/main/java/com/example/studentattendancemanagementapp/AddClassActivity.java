@@ -1,20 +1,25 @@
 package com.example.studentattendancemanagementapp;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddClassActivity extends AppCompatActivity {
 
     EditText nameClassInput, limitAbsentInput, createCodeInput;
     Button createBtn;
 
-    SharedPreferences prefs;
-    SharedPreferences.Editor editor;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +29,9 @@ public class AddClassActivity extends AppCompatActivity {
         nameClassInput = findViewById(R.id.nameClass);
         limitAbsentInput = findViewById(R.id.limitAbsent);
         createCodeInput = findViewById(R.id.createCode);
-        createBtn = findViewById(R.id.btnCreate); // FIXED: removed "Button" keyword
+        createBtn = findViewById(R.id.btnCreate);
 
-        prefs = getSharedPreferences("ClassPrefs", MODE_PRIVATE);
-        editor = prefs.edit();
+        db = FirebaseFirestore.getInstance();
 
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,17 +45,29 @@ public class AddClassActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (prefs.contains(createCode)) {
-                    Toast.makeText(AddClassActivity.this, "Code already exists. Please use a different code.", Toast.LENGTH_LONG).show();
-                    return;
-                }
+                // Check if class code already exists
+                db.collection("classes").document(createCode).get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Toast.makeText(AddClassActivity.this, "Code already exists. Please use a different code.", Toast.LENGTH_LONG).show();
+                    } else {
+                        // Save class data to Firestore
+                        Map<String, Object> classData = new HashMap<>();
+                        classData.put("name", nameClass);
+                        classData.put("limitAbsent", Integer.parseInt(limitAbsent));
+                        classData.put("createdBy", FirebaseAuth.getInstance().getUid());
 
-                String classInfo = nameClass + ";" + limitAbsent;
-                editor.putString(createCode, classInfo);
-                editor.apply();
-
-                Toast.makeText(AddClassActivity.this, "Class created successfully!", Toast.LENGTH_SHORT).show();
-                finish();
+                        db.collection("classes").document(createCode).set(classData)
+                                .addOnSuccessListener(unused -> {
+                                    Toast.makeText(AddClassActivity.this, "Class created successfully!", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(AddClassActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(AddClassActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
             }
         });
     }

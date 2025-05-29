@@ -25,6 +25,8 @@
         <!-- Attendance Activity -->
         <activity android:name=".AttendanceActivity" android:exported="true" />
 
+        <activity android:name=".ClassAttendanceActivity" android:exported="true" />
+
         <!-- Students Activity -->
         <activity android:name=".StudentsActivity" android:exported="true" />
 

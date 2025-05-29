@@ -1,6 +1,7 @@
 package com.example.studentattendancemanagementapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -79,7 +80,14 @@ public class SignUpActivity extends AppCompatActivity {
                                     .addOnSuccessListener(unused -> {
                                         Toast.makeText(SignUpActivity.this, "Sign-up successful!", Toast.LENGTH_SHORT).show();
 
-                                        // Navigate to HomePage
+                                        //  Save name and role in SharedPreferences
+                                        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                                        prefs.edit()
+                                                .putString("name", name)
+                                                .putString("role", role)
+                                                .apply();
+
+                                        //  Navigate to HomePage
                                         Intent i = new Intent(SignUpActivity.this, HomePage.class);
                                         i.putExtra("name", name);
                                         i.putExtra("phone", phone);

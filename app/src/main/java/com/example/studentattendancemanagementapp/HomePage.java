@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class HomePage extends AppCompatActivity {
@@ -15,21 +16,26 @@ public class HomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
 
-        // Get views from layout
-        TextView tvName = findViewById(R.id.teacherName);
-        TextView tvRole = findViewById(R.id.teacherRole);
+        //  Get views from layout
+        TextView tvName = findViewById(R.id.teacherName); // "Welcome, ..."
+        TextView tvRole = findViewById(R.id.teacherRole); // "Role: ..."
 
-        // Get the user data passed from Login
-        String name = getIntent().getStringExtra("name");
-        String role = getIntent().getStringExtra("role");
+        //  Get name and role from SharedPreferences instead of Intent
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String name = prefs.getString("name", null);
+        String role = prefs.getString("role", null);
 
-        // Set name and role in UI
+        //  Set name and role in UI
         if (name != null) {
             tvName.setText("Welcome, " + name + "!");
+        } else {
+            tvName.setText("Welcome!");
         }
 
         if (role != null) {
-            tvRole.setText(" " + role);
+            tvRole.setText(role);
+        } else {
+            tvRole.setText("Unknown");
         }
 
         // Initialize other views

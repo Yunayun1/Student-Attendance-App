@@ -6,4 +6,19 @@
     <string name="logo_desc">School Logo</string>
     <string name="role_prompt">Select Role</string>
     <string name="create_account">Create Account</string>
+
+    <!-- New strings for student dialog and gender options -->
+    <string name="edit_student">Edit Student</string>
+    <string name="add_new_student">Add New Student</string>
+    <string name="name_hint">Name</string>
+    <string name="gender_hint">Gender</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
 </resources>
