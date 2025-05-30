@@ -28,6 +28,7 @@
 
             <!-- Title -->
 
+
             <!-- Join Code Input -->
             <TextView
                 android:id="@+id/btnClose"

@@ -18,31 +18,12 @@ public class AttenStudentActivity implements Serializable {
         this.isSaved = false;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public boolean isPresent() {
-        return isPresent;
-    }
-
-    public void setPresent(boolean present) {
-        this.isPresent = present;
-    }
-
-    public boolean isSaved() {
-        return isSaved;
-    }
-
-    public void setSaved(boolean saved) {
-        this.isSaved = saved;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
+    public boolean isPresent() { return isPresent; }
+    public void setPresent(boolean present) { this.isPresent= present; }
 }

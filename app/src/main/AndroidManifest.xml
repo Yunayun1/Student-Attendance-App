@@ -30,6 +30,8 @@
         <!-- Students Activity -->
         <activity android:name=".StudentsActivity" android:exported="true" />
 
+        <activity android:name=".StudentClassActivity" android:exported="true"/>
+
         <!-- Join Class Activity -->
         <activity android:name=".JoinClassActivity" android:exported="true" />
 
