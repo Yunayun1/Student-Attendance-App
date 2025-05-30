@@ -1,55 +1,26 @@
-package com.example.studentattendancemanagementapp.model;
+package Model;
 
 public class AttenStudent {
-
     private int id;
     private String name;
     private String gender;
-    private boolean present;
-    private boolean saved; // this is needed for setSaved()
+    private boolean isPresent;
 
-    // Add gender to constructor parameters
-    public AttenStudent(int id, String name, String gender, boolean present) {
+    public AttenStudent(int id, String name, String gender, boolean isPresent) {
         this.id = id;
         this.name = name;
-        this.gender = gender; // assign passed gender here
-        this.present = present;
-        this.saved = false;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public boolean isPresent() {
-        return present;
-    }
-
-    public void setPresent(boolean present) {
-        this.present = present;
-    }
-
-    public boolean isSaved() {
-        return saved;
-    }
-
-    public void setSaved(boolean saved) {
-        this.saved = saved;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setGender(String gender) {
         this.gender = gender;
+        this.isPresent = isPresent;
     }
+
+    // getters and setters
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getGender() { return gender; }
+    public boolean isPresent() { return isPresent; }
+    public void setPresent(boolean present) { isPresent = present; }
 }

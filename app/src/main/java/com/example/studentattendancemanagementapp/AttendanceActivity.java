@@ -131,6 +131,7 @@ public class AttendanceActivity extends AppCompatActivity {
         db.collection("classes")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    classList.clear();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         String className = document.getString("className");
                         if (className != null) {

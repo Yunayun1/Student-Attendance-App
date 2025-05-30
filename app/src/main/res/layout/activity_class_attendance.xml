@@ -28,34 +28,61 @@
             android:src="@android:drawable/ic_menu_more" />
     </LinearLayout>
 
-    <!-- Present / Absent Summary -->
+    <!-- Attendance Stats -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_marginTop="24dp">
 
-        <TextView
-            android:id="@+id/presentCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Present: 0"
-            android:background="#00FF00"
-            android:padding="8dp"
-            android:gravity="center" />
+        <!-- Present -->
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_present_box"
+            android:orientation="vertical"
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/absentCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="Absent: 0"
-            android:background="#FF0000"
-            android:padding="8dp"
-            android:gravity="center" />
+            <TextView
+                android:id="@+id/presentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Absent -->
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/bg_absent_box"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/absentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp" />
+        </LinearLayout>
     </LinearLayout>
+
 
     <!-- RecyclerView for Students -->
     <androidx.recyclerview.widget.RecyclerView

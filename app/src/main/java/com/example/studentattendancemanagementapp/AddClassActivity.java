@@ -26,6 +26,7 @@ public class AddClassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_class);
 
+        // Initialize views
         nameClassInput = findViewById(R.id.nameClass);
         limitAbsentInput = findViewById(R.id.limitAbsent);
         createCodeInput = findViewById(R.id.createCode);
@@ -55,6 +56,7 @@ public class AddClassActivity extends AppCompatActivity {
                         classData.put("name", nameClass);
                         classData.put("limitAbsent", Integer.parseInt(limitAbsent));
                         classData.put("createdBy", FirebaseAuth.getInstance().getUid());
+                        classData.put("password", createCode); // 🔑 Add password field
 
                         db.collection("classes").document(createCode).set(classData)
                                 .addOnSuccessListener(unused -> {

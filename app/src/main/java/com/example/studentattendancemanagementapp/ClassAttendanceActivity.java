@@ -5,10 +5,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
-import android.widget.Spinner;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,13 +16,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.studentattendancemanagementapp.model.AttenStudent;
+import Model.AttenStudent;
 import Adapter.StudentAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassAttendanceActivity extends AppCompatActivity {
+public class ClassAttendanceActivity extends AppCompatActivity implements StudentAdapter.OnItemDoubleClickListener {
 
     private List<AttenStudent> students;
     private StudentAdapter adapter;
@@ -44,17 +44,24 @@ public class ClassAttendanceActivity extends AppCompatActivity {
         absentCount = findViewById(R.id.absentCount);
         saveButton = findViewById(R.id.saveButton);
 
+        presentCount.setText("Present: 0");
+        absentCount.setText("Absent: 0");
+
         students = new ArrayList<>();
         RecyclerView studentRecycler = findViewById(R.id.studentListRecycler);
         studentRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new StudentAdapter(this, students, isEditable);
+        adapter.setOnItemDoubleClickListener(this);
         studentRecycler.setAdapter(adapter);
 
         // Swipe to delete
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView,
+                                  RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -66,13 +73,20 @@ public class ClassAttendanceActivity extends AppCompatActivity {
                         .setMessage("Are you sure you want to delete this student?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             students.remove(position);
-                            adapter.notifyItemRemoved(position);
+
+                            // Re-number students
+                            for (int i = 0; i < students.size(); i++) {
+                                students.get(i).setId(i + 1);
+                            }
+
+                            adapter.notifyDataSetChanged(); // Notify full data changed because IDs changed
                             updateCounts();
                         })
                         .setNegativeButton("No", (dialog, which) -> adapter.notifyItemChanged(position))
                         .setCancelable(false)
                         .show();
             }
+
         });
         itemTouchHelper.attachToRecyclerView(studentRecycler);
 
@@ -83,7 +97,7 @@ public class ClassAttendanceActivity extends AppCompatActivity {
             popup.getMenuInflater().inflate(R.menu.attendance_menu, popup.getMenu());
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.menu_new) {
-                    showAddStudentDialog();  // Show dialog
+                    showAddStudentDialog();
                     return true;
                 } else if (item.getItemId() == R.id.menu_edit) {
                     isEditable = true;
@@ -96,11 +110,12 @@ public class ClassAttendanceActivity extends AppCompatActivity {
             popup.show();
         });
 
+        // Save button behavior
         saveButton.setOnClickListener(v -> {
             isEditable = false;
             adapter.setEditable(false);
             for (AttenStudent student : students) {
-                student.setSaved(true);
+                // You can do save logic here if needed
             }
             saveButton.setVisibility(View.GONE);
             updateCounts();
@@ -118,7 +133,6 @@ public class ClassAttendanceActivity extends AppCompatActivity {
         absentCount.setText("Absent: " + (students.size() - present));
     }
 
-    // Show custom dialog to add new student
     private void showAddStudentDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add New Student");
@@ -134,21 +148,27 @@ public class ClassAttendanceActivity extends AppCompatActivity {
             String gender = genderSpinner.getSelectedItem().toString();
 
             if (name.isEmpty()) {
-                Toast.makeText(this, "Please enter the name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please enter a name", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Increment ID properly
-            int id = students.isEmpty() ? 1 : students.get(students.size() - 1).getId() + 1;
-            AttenStudent newStudent = new AttenStudent(id, name, gender, false); // default not present
+            int id = students.size() + 1;
+            AttenStudent newStudent = new AttenStudent(id, name, gender, true); // Present = true by default
             students.add(newStudent);
             adapter.notifyItemInserted(students.size() - 1);
             updateCounts();
-            Toast.makeText(this, "Added: " + name + ", Gender: " + gender, Toast.LENGTH_SHORT).show();
         });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
 
         builder.show();
+    }
+
+    @Override
+    public void onItemDoubleClicked(int position) {
+        AttenStudent student = students.get(position);
+        student.setPresent(!student.isPresent());  // toggle present/absent
+        adapter.notifyItemChanged(position);
+        updateCounts();
     }
 }

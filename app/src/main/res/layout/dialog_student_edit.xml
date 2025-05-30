@@ -9,7 +9,8 @@
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"/>
+        android:hint="Enter Name" />
+
 
     <Spinner
         android:id="@+id/spinnerGender"
@@ -17,5 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:entries="@array/gender_options" />
+
+
 
 </LinearLayout>
